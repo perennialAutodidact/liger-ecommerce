@@ -4,6 +4,9 @@ const cartTotalDisplay = document.querySelector('#cart-total-price')
 
 const cartItemCountDisplay = document.querySelector('#cart-item-count')
 
+// const BASE_URL = 'http://localhost:8000/payments'
+const BASE_URL = 'https://liger-ecommerce.herokuapp.com'
+
 const axiosConfig = {
   headers: {
     'X-CSRFToken': csrfToken.value,
@@ -27,7 +30,7 @@ quantityInputs.forEach(quantityInput => {
     cartItemId = cartItemId.split('-')[1]
 
     // build the url with the cartItemId from the changed form
-    const url = 'http://localhost:8000/update-cart-item/' + cartItemId
+    const url = `${BASE_URL}/update-cart-item/` + cartItemId
 
     // instantiate new form data
     const data = new FormData()

@@ -1,6 +1,7 @@
 const checkoutButton = document.querySelector('#checkout-button')
 
-const BASE_URL = 'http://localhost:8000/payments'
+// const BASE_URL = 'http://localhost:8000/payments'
+const BASE_URL = 'https://liger-ecommerce.herokuapp.com'
 
 /**
  * 
