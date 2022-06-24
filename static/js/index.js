@@ -4,8 +4,6 @@ const cartTotalDisplay = document.querySelector('#cart-total-price')
 
 const cartItemCountDisplay = document.querySelector('#cart-item-count')
 
-const BASE_URL = 'https://liger-ecommerce.herokuapp.com'
-
 const axiosConfig = {
   headers: {
     'X-CSRFToken': csrfToken.value,

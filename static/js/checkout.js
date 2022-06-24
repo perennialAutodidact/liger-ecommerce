@@ -1,7 +1,5 @@
 const checkoutButton = document.querySelector('#checkout-button')
 
-const BASE_URL = 'https://liger-ecommerce.herokuapp.com'
-
 /**
  * 
  * @returns Promise which will either resolve with the Stripe publicKey or reject with an error
