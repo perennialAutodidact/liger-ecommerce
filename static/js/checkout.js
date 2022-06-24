@@ -6,7 +6,7 @@ const checkoutButton = document.querySelector('#checkout-button')
  */
 function fetchStripeConfig () {
   return axios
-    .get(BASE_URL + '/config/')
+    .get(BASE_URL + '/payments/config/')
     .then(response => response.data)
     .catch(error => error)
 }
@@ -19,7 +19,7 @@ checkoutButton.addEventListener('click', () => {
         const stripe = Stripe(publicKey)
 
         // call Django to create and return a Stripe session id
-        axios.get(BASE_URL + '/checkout/')
+        axios.get(BASE_URL + '/payments/checkout/')
           .then(response=>{
             const sessionId = response.data.sessionId
 
