@@ -11,19 +11,28 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import decouple
+import psycopg2
+import dj_database_url
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gcvk92i&-j7q1@(uqdog%t$v8=w%bhb5_9yr5foyjpk+=d4+(h'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = decouple.config('DJANGO_DEBUG', cast=bool)
+
+# programatically set the SECRET_KEY variable
+if DEBUG:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    key = 'DJANGO_SECRET_KEY_DEV'
+else:
+    key = 'DJANGO_SECRET_KEY_PRO'
+
+SECRET_KEY = decouple.config(key)
+
+
 
 ALLOWED_HOSTS = []
 
@@ -44,6 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,13 +86,21 @@ WSGI_APPLICATION = 'ecommerce_proj.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASE_URL = decouple.config('DATABASE_URL')
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
+
 
 
 # Password validation
@@ -121,6 +139,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR/'static']
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -130,3 +149,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # define a custom user model
 AUTH_USER_MODEL = 'users_app.User'
+
+
+django_heroku.settings(locals())
