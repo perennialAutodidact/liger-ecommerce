@@ -44,7 +44,7 @@ def register(request):
             # log in new user
             django_login(request, new_user)
 
-            return redirect('shop_app:register')
+            return redirect('shop_app:index')
 
     
     context = {
