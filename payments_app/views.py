@@ -43,8 +43,8 @@ def checkout(request):
         checkout_session = stripe.checkout.Session.create(
             mode='payment',
             payment_method_types=['card'],
-            success_url=f"http://localhost:8000/payments/receipt/{request.user.username}",
-            cancel_url=f"http://localhost:8000/users/{request.user.username}",
+            success_url=f"https://liger-ecommerce.herokuapp.com/payments/receipt/{request.user.username}",
+            cancel_url=f"https://liger-ecommerce.herokuapp.com/users/{request.user.username}",
            
             # line_items contains all the product data
             line_items = line_items
