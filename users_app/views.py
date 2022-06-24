@@ -11,7 +11,8 @@ from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 
-from shop_app.models import Product
+
+from shop_app.models import Product, Cart
 
 def index(request):
     return render(request, 'pics/index.html')
@@ -37,6 +38,9 @@ def register(request):
             # hash the user's password
             # using the validated form data
             new_user.set_password(form.cleaned_data['password'])
+
+            # create a cart for the user
+            Cart.objects.create(user=new_user)
 
             # commit the changed to the database
             new_user.save()
